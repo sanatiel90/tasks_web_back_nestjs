@@ -68,7 +68,7 @@ model Customer {
   id        Int     @id @default(autoincrement())
   entity    String 
   uf        StatesEnum
-  cnpj      String  @db.VarChar(14)
+  cnpj      String  @unique @db.VarChar(14)
   email     String?
   phones    CustomerPhones[]
 }

@@ -6,10 +6,10 @@ import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/auth.guard';
-import { ProfilesModule } from './modules/profiles/profiles.module';
+import { CustomersModule } from './modules/customers/customers.module';
 
 @Module({
-  imports: [AuthModule, DatabaseModule, UsersModule, ProfilesModule],
+  imports: [AuthModule, DatabaseModule, UsersModule, CustomersModule],
   controllers: [AppController],
   providers: [
     AppService,
