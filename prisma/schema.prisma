@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id      Int @id @default(autoincrement())
+  name    String
+  slug    String
+  users   User[]
+
+  @@map("profiles")
+}
+
+model User {
+  id        Int @id @default(autoincrement())
+  name      String 
+  email     String @unique
+  password  String
+  profileId Int
+  avatar    String?  
+  profile   Profile @relation(fields: [profileId], references: [id])
+
+  @@map("users")
+}
+
+enum StatesEnum {
+  AC
+  AL
+  AP
+  AM
+  BA
+  CE
+  DF
+  ES
+  GO
+  MA
+  MT
+  MS
+  MG
+  PA
+  PB
+  PR
+  PE
+  PI
+  RJ
+  RN
+  RS
+  RO
+  RR
+  SC
+  SP
+  SE
+  TO
+
+  @@map("states_enum")
+}
+
+
+model Customer {
+  id        Int     @id @default(autoincrement())
+  entity    String 
+  uf        StatesEnum
+  cnpj      String  @db.VarChar(14)
+  email     String?
+  phones    CustomerPhones[]
+}
+
+model CustomerPhones {
+  id         Int     @id @default(autoincrement())
+  customerId Int
+  phone      String 
+  customer   Customer @relation(fields: [customerId], references: [id])
+}
