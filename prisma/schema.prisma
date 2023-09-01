@@ -71,6 +71,8 @@ model Customer {
   cnpj      String  @unique @db.VarChar(14)
   email     String?
   phones    CustomerPhones[]
+
+  @@map("customers")
 }
 
 model CustomerPhones {
@@ -78,4 +80,6 @@ model CustomerPhones {
   customerId Int
   phone      String 
   customer   Customer @relation(fields: [customerId], references: [id])
+  
+  @@map("customer_phones")
 }

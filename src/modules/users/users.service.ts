@@ -18,18 +18,7 @@ export class UsersService {
   async store(createUserDTO: CreateUserDTO) {
     const { name, email, password, profileId } = createUserDTO;
 
-    const emailTaken = await this.findByEmail(email);
-    if (emailTaken) {
-      throw new ConflictException('E-mail already in use');
-    }
-    const validProfile = await this.profilesRepository.findFirst({
-      where: {
-        id: profileId,
-      },
-    });
-    if (!validProfile) {
-      throw new BadRequestException('Profile does not exist');
-    }
+    await this.validate(createUserDTO);
 
     const hashPassword = await bcrypt.hash(password, 12);
 
@@ -43,6 +32,22 @@ export class UsersService {
     });
 
     return user;
+  }
+
+  private async validate(createUserDTO: CreateUserDTO) {
+    const { email, profileId } = createUserDTO;
+    const emailTaken = await this.findByEmail(email);
+    if (emailTaken) {
+      throw new ConflictException('E-mail already in use');
+    }
+    const validProfile = await this.profilesRepository.findFirst({
+      where: {
+        id: profileId,
+      },
+    });
+    if (!validProfile) {
+      throw new BadRequestException('Profile does not exist');
+    }
   }
 
   findByEmail(email: string) {

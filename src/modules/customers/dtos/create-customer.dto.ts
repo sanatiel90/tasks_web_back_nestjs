@@ -1,4 +1,4 @@
-import { StatesEnum } from '@prisma/client';
+import { CustomerPhones, StatesEnum } from '@prisma/client';
 import {
   IsArray,
   IsEmail,
@@ -8,16 +8,19 @@ import {
   IsString,
   MaxLength,
   MinLength,
+  Validate,
 } from 'class-validator';
+import { CustomerPhonesValidator } from '../../../shared/validators/customer-phones-validator';
 
 export class CreateCustomerDTO {
   @IsString()
   @IsNotEmpty()
   entity: string;
 
+  @IsString()
   @IsEnum(StatesEnum)
   @IsNotEmpty()
-  uf: string;
+  uf: StatesEnum;
 
   @IsString()
   @IsNotEmpty()
@@ -30,6 +33,7 @@ export class CreateCustomerDTO {
   email: string;
 
   @IsArray()
+  @Validate(CustomerPhonesValidator)
   @IsOptional()
-  phones: string[];
+  phones: CustomerPhones[];
 }
